@@ -1,0 +1,12 @@
+{
+  "name": "meridian-demo-playwright",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright demo suite against Wikipedia, seeded with common automation anti-patterns.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0"
+  }
+}

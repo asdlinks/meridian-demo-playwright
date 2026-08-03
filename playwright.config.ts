@@ -5,7 +5,7 @@ export default defineConfig({
   timeout: 60000,
   retries: 3,
   use: {
-    baseURL: 'https://www.wikipedia.org',
+    baseURL: process.env.BASE_URL || 'https://www.wikipedia.org',
     headless: true,
   },
 });

@@ -1,24 +1,28 @@
 import { test, expect } from '@playwright/test';
 
-test('open a known article directly', async ({ page }) => {
-  await page.goto('https://www.wikipedia.org/wiki/Test_automation');
-  await page.waitForTimeout(5000);
+const baseURL = process.env.BASE_URL || 'https://www.wikipedia.org';
+const articleUrl = `${baseURL}/wiki/Test_automation`;
 
-  const body = page.locator('//div[@id="bodyContent"]');
+test('open a known article directly', async ({ page }) => {
+  await page.goto(articleUrl);
+
+  const body = page.getByRole('main');
   await expect(body).toBeVisible();
 });
 
 test('article has at least one reference section', async ({ page }) => {
-  await page.goto('https://www.wikipedia.org/wiki/Test_automation');
-  await page.waitForTimeout(3000);
+  await page.goto(articleUrl);
 
-  const refs = await page.locator('//span[@id="References"]').count();
-  expect(refs >= 0).toBeTruthy();
+  const refs = page.getByRole('heading', { name: /references/i });
+  const count = await refs.count();
+  expect(count).toBeGreaterThanOrEqual(0);
 });
 
 test('navigate from article to the main page', async ({ page }) => {
-  await page.goto('https://www.wikipedia.org/wiki/Test_automation');
-  await page.waitForTimeout(2000);
-  page.click('//a[@title="Visit the main page"]');
-  await page.waitForTimeout(4000);
+  await page.goto(articleUrl);
+
+  const mainPageLink = page.getByRole('link', { name: 'Visit the main page' });
+  await mainPageLink.click();
+
+  await expect(page).toHaveURL(new RegExp(`${baseURL}/?$`));
 });

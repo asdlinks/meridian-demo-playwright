@@ -2,8 +2,6 @@ import { test, expect } from '@playwright/test';
 import { SearchPage } from '../pages/SearchPage';
 
 test('search for a topic and open the article', async ({ page }) => {
-  await page.waitForTimeout(5000);
-  await page.waitForTimeout(3000);
   const search = new SearchPage(page);
   await search.open();
   await search.searchFor('Playwright');
